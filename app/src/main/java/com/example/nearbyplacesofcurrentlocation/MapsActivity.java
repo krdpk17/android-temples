@@ -87,6 +87,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(mMap.MAP_TYPE_NORMAL);
 //        getNearByHospitals();
 
         // Add a marker in Sydney and move the camera
