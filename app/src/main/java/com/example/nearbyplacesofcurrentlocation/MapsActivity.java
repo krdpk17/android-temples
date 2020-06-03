@@ -7,12 +7,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -215,6 +218,39 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("onActivityResult()", Integer.toString(resultCode));
+
+        //final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+        switch (requestCode)
+        {
+            case REQUEST_CHECK_SETTINGS_GPS:
+                switch (resultCode)
+                {
+                    case Activity.RESULT_OK:
+                    {
+                        // All required changes were successfully made
+                        Log.d("onActivityResult", "RESULT_OK");
+                        break;
+                    }
+                    case Activity.RESULT_CANCELED:
+                    {
+                        // The user was asked to change settings, but chose not to
+                        Log.e("onActivityResult", "RESULT_CANCELED");
+                        break;
+                    }
+                    default:
+                    {
+                        Log.e("onActivityResult", "Unknown result");
+                        break;
+                    }
+                }
+                break;
+        }
     }
 
     protected void checkLocationSettings(){
