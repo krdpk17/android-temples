@@ -235,6 +235,12 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
                     {
                         // All required changes were successfully made
                         Log.d("onActivityResult", "RESULT_OK");
+                        int permissionLocation = ContextCompat
+                                .checkSelfPermission(MapsActivity.this,
+                                        Manifest.permission.ACCESS_FINE_LOCATION);
+                        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                            getLastLocation();
+                        }
                         break;
                     }
                     case Activity.RESULT_CANCELED:
