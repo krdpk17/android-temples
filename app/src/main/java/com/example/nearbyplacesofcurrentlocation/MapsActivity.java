@@ -104,13 +104,10 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        myLocation = location;
-
+    private void setMyLocation(){
         if(myLocation != null){
-            currentLatitude = location.getLatitude();
-            currentLongitude = location.getLongitude();
+            currentLatitude = myLocation.getLatitude();
+            currentLongitude = myLocation.getLongitude();
             BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.navigation);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15.0f));
             MarkerOptions markerOptions = new MarkerOptions();
@@ -118,8 +115,14 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
             markerOptions.title("You");
             markerOptions.icon(icon);
             mMap.addMarker(markerOptions);
-            getNearByHospitals();
+//            getNearByHospitals();
         }
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        myLocation = location;
+        setMyLocation();
+
     }
 
     private void getNearByHospitals() {
@@ -240,6 +243,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
                                         Manifest.permission.ACCESS_FINE_LOCATION);
                         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
                             getLastLocation();
+                            setMyLocation();
                         }
                         break;
                     }
@@ -283,6 +287,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener {
                                         Manifest.permission.ACCESS_FINE_LOCATION);
                         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
                             getLastLocation();
+                            setMyLocation();
                         }
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
